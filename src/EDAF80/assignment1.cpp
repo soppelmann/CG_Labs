@@ -384,7 +384,7 @@ int main() {
       //                                 glm::vec3(1.0f,
       //                                 0.0f, 1.0f));
       // move camera, translate from prev location
-      //camera.mWorld.LookAt(earth.get_ploc()); // spin camera
+      camera.mWorld.LookAt(earth.get_ploc()); // spin camera
       break;
 
     case 2:

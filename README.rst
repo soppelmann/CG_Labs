@@ -1,15 +1,6 @@
-|UbuntuBadge| |MacOSBadge| |WindowsBadge|
-
-.. |UbuntuBadge| image:: https://github.com/LUGGPublic/CG_Labs/actions/workflows/ubuntu.yml/badge.svg
-   :target: https://github.com/LUGGPublic/CG_Labs/actions/workflows/ubuntu.yml
-.. |MacOSBadge| image:: https://github.com/LUGGPublic/CG_Labs/actions/workflows/macos.yml/badge.svg
-   :target: https://github.com/LUGGPublic/CG_Labs/actions/workflows/macos.yml
-.. |WindowsBadge| image:: https://github.com/LUGGPublic/CG_Labs/actions/workflows/windows.yml/badge.svg
-   :target: https://github.com/LUGGPublic/CG_Labs/actions/workflows/windows.yml
-
-CG_Labs contains the source code for the various Computer Graphics courses
-taught at `Lund University`_ (EDAF80_ and EDAN35_). All assignments of EDAF80
-are available, as well as the second assignment of EDAN35.
+Bear  is used for creating the compilation database
+in the root directory name this repo `code` and create a separate build folder `build`
+`run bear -- cmake --build build`
 
 The public repository is found at https://github.com/LUGGPublic/CG_Labs, and
 its documentation at https://luggpublic.github.io/CG_Labs.
