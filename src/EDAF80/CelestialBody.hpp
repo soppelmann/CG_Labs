@@ -66,7 +66,10 @@ public:
 	//! \brief Configure the spin parameters for this celestial body.
 	void set_spin(SpinConfiguration const& configuration);
 
-	//! \brief Default constructor for a celestial body.
+	//! \brief Get the location for the camera to follow a planet
+  glm::vec3 get_ploc();
+
+  //! \brief Default constructor for a celestial body.
 	//!
 	//! @param [in] shape Shape used for the rings.
 	//! @param [in] program Identifier of the shader program used to render
