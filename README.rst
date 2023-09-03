@@ -1,6 +1,6 @@
 Bear  is used for creating the compilation database
-in the root directory name this repo `code` and create a separate build folder `build`
-`run bear -- cmake --build build`
+in the root directory name this repo ``code`` and create a separate build folder ``build``
+``run bear -- cmake --build build``
 
 The public repository is found at https://github.com/LUGGPublic/CG_Labs, and
 its documentation at https://luggpublic.github.io/CG_Labs.
