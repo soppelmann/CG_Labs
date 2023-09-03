@@ -358,9 +358,9 @@ int main() {
 
       std::vector<CelestialBody *> children = planet.body->get_children();
       // get_children returns a vector according to CelestialBody.hpp
-      for (int i = 0; i < children.size(); i++) {
+        for (CelestialBody* cb : children) {
         CelestialBodyRef ref;
-        ref.body = children[i];
+        ref.body = cb;
         ref.parent_transform = transform;
         Cstack.push(ref);
       }
