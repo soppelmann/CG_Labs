@@ -234,7 +234,7 @@ int main() {
   saturn.set_orbit(saturn_orbit);
   saturn.set_scale(saturn_scale);
   //	saturn.set_ring(saturn_ring_shape, &celestial_ring_shader,
-  //saturn_ring_texture);
+  // saturn_ring_texture);
 
   CelestialBody uranus(sphere, &celestial_body_shader, uranus_texture);
   uranus.set_spin(uranus_spin);
@@ -342,7 +342,7 @@ int main() {
     CelestialBodyRef root;
     root.body = &sun;
     root.parent_transform =
-        glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+        glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
     Cstack.push(root);
 
@@ -366,6 +366,39 @@ int main() {
       }
     }
 
+    // Convert the duration from microseconds to seconds.
+
+    const char *items[] = {"Apple",     "Banana",     "Cherry",
+                           "Kiwi",      "Mango",      "Orange",
+                           "Pineapple", "Strawberry", "Watermelon"};
+
+    static int item_current = 1;
+    ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
+
+    // camera to follow
+
+    switch (item_current) {
+
+    case 1:
+      camera.mWorld.SetTranslate(sun.get_ploc() * glm::vec3(0.0f, 1.0f, 3.0f));
+      //                                 glm::vec3(1.0f,
+      //                                 0.0f, 1.0f));
+      // move camera, translate from prev location
+      //camera.mWorld.LookAt(earth.get_ploc()); // spin camera
+      break;
+
+    case 2:
+      camera.mWorld.SetTranslate(glm::vec3(0.0f, 0.0f, 6.0f));
+      camera.mWorld.LookAt(glm::vec3(0.0f));
+      break;
+
+    default:
+      // camera.mWorld.SetTranslate(glm::vec3(0.0f, 0.0f, 6.0f));
+      // camera.mWorld.LookAt(glm::vec3(0.0f));
+
+      break;
+    }
+
     // earth.render(animation_delta_time_us, camera.GetWorldToClipMatrix(),
     // glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f)),
     // show_basis);
@@ -383,11 +416,6 @@ int main() {
       ImGui::SliderFloat("Time scale", &time_scale, 1e-1f, 10.0f);
       ImGui::Separator();
       ImGui::Checkbox("Show basis", &show_basis);
-
-       const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
-            static int item_current = 1;
-            ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
-
     }
     ImGui::End();
 

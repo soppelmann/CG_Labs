@@ -1,9 +1,9 @@
 #include "CelestialBody.hpp"
-
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/trigonometric.hpp>
+#include <stack>
 
 #include "core/Log.h"
 #include "core/helpers.hpp"
@@ -14,6 +14,10 @@ CelestialBody::CelestialBody(bonobo::mesh_data const &shape,
   _body.node.add_texture("diffuse_texture", diffuse_texture_id, GL_TEXTURE_2D);
   _body.node.set_program(program);
 }
+
+
+float etime;
+glm::mat3 pworld;
 
 glm::mat4 CelestialBody::render(std::chrono::microseconds elapsed_time,
                                 glm::mat4 const &view_projection,
@@ -56,6 +60,30 @@ glm::mat4 CelestialBody::render(std::chrono::microseconds elapsed_time,
     bonobo::renderBasis(1.0f, 2.0f, view_projection, world);
   }
 
+
+  // Let us follow planets, not working
+    glm::mat3 pscale = glm::scale(glm::mat4(1.0f), _body.scale);
+
+  glm::mat3 pR1 = glm::rotate(glm::mat4(1.0f), _body.spin.rotation_angle,
+                             glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat3 pR2 = glm::rotate(glm::mat4(1.0f), _body.spin.axial_tilt,
+                             glm::vec3(0.0f, 0.0f, 1.0f));
+  glm::mat3 ptworld = glm::translate(glm::mat4(1.0f),
+                                    glm::vec3(_body.orbit.radius, 0.0f, 0.0f));
+
+  glm::mat3 pR1o = glm::rotate(glm::mat4(1.0f), _body.orbit.rotation_angle,
+                              glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat3 pnR1o = glm::rotate(glm::mat4(1.0f), -_body.orbit.rotation_angle,
+                               glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::mat3 pR2o = glm::rotate(glm::mat4(1.0f), _body.orbit.inclination,
+                              glm::vec3(0.0f, 0.0f, 1.0f));
+
+  //pworld = pR1o * ptworld * pnR1o * pR2o * pscale * pR2 * pR1;
+  pworld = pR1o * ptworld * pR2o * pR2;
+  //pworld = pR2o * ptworld * pR1o * pscale;
+
+
+
   // Note: The second argument of `node::render()` is supposed to be the
   // parent transform of the node, not the whole world matrix, as the
   // node internally manages its local transforms. However in our case we
@@ -64,16 +92,25 @@ glm::mat4 CelestialBody::render(std::chrono::microseconds elapsed_time,
   // world matrix.
   _body.node.render(view_projection, world);
 
+  etime = _body.orbit.radius;
+  //etime = _body.orbit.rotation_angle;
+
   return parent_transform * R1o * tworld * R2o * R2;
 }
 
-void CelestialBody::add_child(CelestialBody *child) {
-  _children.push_back(child);
+void CelestialBody::add_child(CelestialBody *child) {  _children.push_back(child);
 }
 
 std::vector<CelestialBody *> const &CelestialBody::get_children() const {
   return _children;
 }
+
+glm::vec3 CelestialBody::get_ploc() {
+  //glm::vec3 svec = glm::vec3(2.0f + etime * 0.05f, etime * 0.00f, etime * 0.05f );
+  //glm::vec3 svec = glm::vec3(2.0f - etime, 0 , etime);
+  glm::vec3 svec = glm::vec3(1.0f) * pworld;// * etime;
+  return svec;
+};
 
 void CelestialBody::set_orbit(OrbitConfiguration const &configuration) {
   _body.orbit.radius = configuration.radius;
